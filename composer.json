@@ -1,5 +1,5 @@
 {
-    "name": "lazeroy/diff_generator",
+    "name": "lazeroy/diffgen",
     "description": "config files difference generator",
     "type": "project",
     "license": "MIT",
