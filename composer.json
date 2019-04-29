@@ -11,5 +11,14 @@
     ],
     "require": {
         "docopt/docopt": "^1.0"
-    }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.*"
+    },
+    "scripts":{
+        "phpcs": "phpcs"
+    },
+    "bin":[
+        "bin/gendiff"
+    ]
 }
