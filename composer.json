@@ -18,6 +18,11 @@
     "scripts":{
         "phpcs": "phpcs"
     },
+    "autoload": {
+        "files": [
+            "src/Diffgenerator.php"
+        ]
+    },
     "bin":[
         "bin/gendiff"
     ]
