@@ -13,5 +13,5 @@ function run()
              --version               Show version.
 DOCOPT;
 
-    $args = Docopt::handle($doc, array('version' => 'Naval Fate 2.0'));
+    $args = Docopt::handle($doc, array('version' => 'Diff Generator 0.0.2'));
 }
