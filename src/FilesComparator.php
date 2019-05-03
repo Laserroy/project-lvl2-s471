@@ -4,10 +4,8 @@ namespace DiffGenerator\FilesComparator;
 
 use function Funct\Collection\union;
 
-function filesParser($json1, $json2)
+function filesParser($data1, $data2)
 {
-    $data1 = json_decode($json1, true);
-    $data2 = json_decode($json2, true);
     $unitedArray = union($data1, $data2);
     $result = [];
     foreach ($unitedArray as $k => $v) {
@@ -22,6 +20,5 @@ function filesParser($json1, $json2)
             $result["- " . $k] = $data1[$k];
         }
     }
-    $outputString = json_encode($result);
-    return $outputString;
+    return $result;
 }
