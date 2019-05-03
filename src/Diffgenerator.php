@@ -33,7 +33,6 @@ function run($docDescription, $params)
                 $result = Yaml::dump(filesParser($data1, $data2));
                 print_r($result);
                 break;
-
         }
     }
 }
