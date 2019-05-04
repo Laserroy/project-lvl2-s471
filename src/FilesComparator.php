@@ -22,3 +22,15 @@ function filesParser($data1, $data2)
     }
     return $result;
 }
+
+function renderDifference($array)
+{
+    echo "{\n";
+    foreach ($array as $k => $v) {
+        if ($v === true) {
+            $v = 'true';
+        }
+        echo "    $k" . ": " . "$v\n";
+    }
+    echo "}\n";
+}

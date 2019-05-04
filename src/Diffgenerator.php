@@ -3,6 +3,7 @@ namespace DiffGenerator;
 use Docopt;
 use function DiffGenerator\FilesComparator\filesParser;
 use Symfony\Component\Yaml\Yaml;
+use function DiffGenerator\FilesComparator\renderDifference;
 
 function run($docDescription, $params)
 {
@@ -30,8 +31,8 @@ function run($docDescription, $params)
             case 'yml':
                 $data1 = Yaml::parseFile($pathToFile1);
                 $data2 = Yaml::parseFile($pathToFile2);
-                $result = Yaml::dump(filesParser($data1, $data2));
-                print_r($result);
+                $result = filesParser($data1, $data2);
+                renderDifference($result);
                 break;
         }
     }

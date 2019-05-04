@@ -26,7 +26,7 @@ class FilesComparatorTest extends TestCase
             "- proxy" => "123.234.53.22",
             "+ verbose" => true
         ];
-        $result = filesParser(json_encode($before), json_encode($after));
-        $this->assertEquals(json_encode($diff), $result);
+        $result = filesParser($before, $after);
+        $this->assertEquals($diff, $result);
     }
 }
