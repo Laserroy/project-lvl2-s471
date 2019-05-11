@@ -3,30 +3,86 @@
 namespace DiffGenerator\Tests;
 
 use PHPUnit\Framework\TestCase;
-use function DiffGenerator\FilesComparator\filesParser;
+use function DiffGenerator\FilesComparator\buildDiffTree;
+use function DiffGenerator\FilesComparator\renderDiff;
 
 class FilesComparatorTest extends TestCase
 {
-    public function testFilesParser()
+    
+
+    public function testBuildDiffTree()
     {
-        $before = [
-            "host" => "hexlet.io",
-            "timeout" => 50,
-            "proxy" => "123.234.53.22"
-        ];
-        $after = [
-            "timeout" => 20,
-            "verbose" => true,
-             "host" => "hexlet.io"
-        ];
-        $diff = [
-            "  host" => "hexlet.io",
-            "+ timeout" => 20,
-            "- timeout" => 50,
-            "- proxy" => "123.234.53.22",
-            "+ verbose" => true
-        ];
-        $result = filesParser($before, $after);
-        $this->assertEquals($diff, $result);
+        $a = '{
+        "common": {
+          "setting1": "Value 1",
+          "setting2": "200",
+          "setting3": true,
+          "setting6": {
+            "key": "value"
+          }
+        },
+        "group1": {
+          "baz": "bas",
+          "foo": "bar"
+        },
+        "group2": {
+          "abc": "12345"
+        }
+      }';
+    
+        $b = '{
+        "common": {
+          "setting1": "Value 1",
+          "setting3": true,
+          "setting4": "blah blah",
+          "setting5": {
+            "key5": "value5"
+          }
+        },
+      
+        "group1": {
+          "foo": "bar",
+          "baz": "bars"
+        },
+      
+        "group3": {
+          "fee": "100500"
+        }
+      }';
+        $c = <<<'HEREDOC'
+{
+    common: {
+        setting1: Value 1
+      - setting2: 200
+        setting3: true
+      - setting6: {
+            key: value
+        }
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+    }
+    group1: {
+      + baz: bars
+      - baz: bas
+        foo: bar
+    }
+  - group2: {
+        abc: 12345
+    }
+  + group3: {
+        fee: 100500
+    }
+}
+
+HEREDOC;
+        $adata = json_decode($a, true);
+        $bdata = json_decode($b, true);
+        
+      
+          $result = buildDiffTree($adata, $bdata);
+          $resultString = renderDiff($result);
+          $this->assertEquals($c, $resultString);
     }
 }

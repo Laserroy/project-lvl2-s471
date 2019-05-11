@@ -1,9 +1,10 @@
 <?php
 namespace DiffGenerator;
 use Docopt;
-use function DiffGenerator\FilesComparator\filesParser;
+
 use Symfony\Component\Yaml\Yaml;
-use function DiffGenerator\FilesComparator\renderDifference;
+use function DiffGenerator\FilesComparator\buildDiffTree;
+use function DiffGenerator\FilesComparator\renderDiff;
 
 function run($docDescription, $params)
 {
@@ -26,13 +27,14 @@ function run($docDescription, $params)
                 $file2 = file_get_contents($pathToFile2);
                 $data1 = json_decode($file1, true);
                 $data2 = json_decode($file2, true);
-                return json_encode(filesParser($data1, $data2));
+                $result = buildDiffTree($data1, $data2);
+                print_r(renderDiff($result));
                 break;
             case 'yml':
                 $data1 = Yaml::parseFile($pathToFile1);
                 $data2 = Yaml::parseFile($pathToFile2);
-                $result = filesParser($data1, $data2);
-                renderDifference($result);
+                $result = buildDiffTree($data1, $data2);
+                print_r(renderDiff($result));
                 break;
         }
     }
