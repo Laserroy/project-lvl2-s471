@@ -3,8 +3,9 @@
 namespace DiffGenerator\Tests;
 
 use PHPUnit\Framework\TestCase;
-use function DiffGenerator\FilesComparator\buildDiffTree;
-use function DiffGenerator\FilesComparator\renderDiff;
+use function DiffGenerator\DifferenceBuilder\buildDiffTree;
+use function DiffGenerator\DifferenceFormatter\renderDiff;
+use function DiffGenerator\DifferenceFormatter\renderPlainDiff;
 
 class FilesComparatorTest extends TestCase
 {
@@ -49,8 +50,8 @@ class FilesComparatorTest extends TestCase
           "fee": "100500"
         }
       }';
-        $c = <<<'HEREDOC'
-{
+        $c =
+        "{
     common: {
         setting1: Value 1
       - setting2: 200
@@ -74,9 +75,7 @@ class FilesComparatorTest extends TestCase
   + group3: {
         fee: 100500
     }
-}
-
-HEREDOC;
+}\n";
         $adata = json_decode($a, true);
         $bdata = json_decode($b, true);
         

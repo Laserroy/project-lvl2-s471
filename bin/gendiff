@@ -2,7 +2,7 @@
 <?php
 
 namespace DiffGenerator;
-use function DiffGenerator\show;
+use function DiffGenerator\run;
 
 $autoloadPath1 = __DIR__ . '/../../../autoload.php';
 $autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
@@ -16,12 +16,16 @@ $docDescription = <<<'DOCOPT'
         Usage:
             gendiff (-h | --help)
             gendiff --version
-            gendiff (PATH1) (PATH2)
+            gendiff [--format=TYPE] PATH1 PATH2
 
- 
+        Arguments:
+            PATH1
+            PATH2
+            TYPE
         Options:
-            -h --help                Show this help message and exit
-            --version                Show version.
+            -h --help                 Show this help message and exit
+            --version                 Show version.
+            --format=TYPE             Show difference in selected type.
 DOCOPT;
 
 $params = array(

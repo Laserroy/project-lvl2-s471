@@ -29,7 +29,8 @@
         },
         "files": [
             "src/Diffgenerator.php",
-            "src/FilesComparator.php"
+            "src/DifferenceBuilder.php",
+            "src/DifferenceFormatter.php"
         ]
     },
     "bin": [
