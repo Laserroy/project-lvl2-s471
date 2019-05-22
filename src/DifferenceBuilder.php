@@ -5,59 +5,46 @@ namespace DiffGenerator\DifferenceBuilder;
 use function Funct\Collection\union;
 
 
-function isAssocArray($array)
-{
-    if (!is_array($array)) {
-        return false;
-    }
-    foreach (array_keys($array) as $key) {
-        if (!is_int($key)) {
-            return true;
-        }
-        return false;
-    }
-}
-
 function buildDiffTree($beforeData, $afterData)
 {
-    $beforeKeys = array_keys($beforeData);
-    $afterKeys = array_keys($afterData);
-    $commonKeys = union($beforeKeys, $afterKeys);
+    $beforeArray = get_object_vars($beforeData);
+    $afterArray = get_object_vars($afterData);
+    $commonKeys = union(array_keys($beforeArray), array_keys($afterArray));
     $diffTree = array_reduce(
         $commonKeys,
-        function ($acc, $key) use ($beforeData, $afterData) {
-            if (array_key_exists($key, $beforeData) && !array_key_exists($key, $afterData)) {
+        function ($acc, $key) use ($beforeArray, $afterArray) {
+            if (array_key_exists($key, $beforeArray) && !array_key_exists($key, $afterArray)) {
                    $acc[] = [
                     "status" => "-",
                     "name" => $key,
                     "children" => null,
-                    "value" => $beforeData[$key]
+                    "value" => $beforeArray[$key]
                    ];
                    return $acc;
-            } elseif (!array_key_exists($key, $beforeData) && array_key_exists($key, $afterData)) {
+            } elseif (!array_key_exists($key, $beforeArray) && array_key_exists($key, $afterArray)) {
                 $acc[] = [
                 "status" => "+",
                 "name" => $key,
                 "children" => null,
-                "value" => $afterData[$key]
+                "value" => $afterArray[$key]
                 ];
                 return $acc;
             } else {
-                if ($beforeData[$key] === $afterData[$key]) {
+                if ($beforeArray[$key] === $afterArray[$key]) {
                     $acc[] = [
                     "status" => " ",
                     "name" => $key,
                     "children" => null,
-                    "value" => $afterData[$key]
+                    "value" => $afterArray[$key]
                     ];
                     return $acc;
                 }
-                if (isAssocArray($afterData[$key]) && isAssocArray($beforeData[$key])) {
+                if (is_object($afterArray[$key]) && is_object($beforeArray[$key])) {
                     $acc[] = [
                     "status" => " ",
                     "name" => $key,
                     "children" => "nested",
-                    "value" => buildDiffTree($beforeData[$key], $afterData[$key])
+                    "value" => buildDiffTree($beforeArray[$key], $afterArray[$key])
                     ];
                     return $acc;
                 } else {
@@ -65,13 +52,13 @@ function buildDiffTree($beforeData, $afterData)
                     "status" => "+",
                     "name" => $key,
                     "children" => null,
-                    "value" => $afterData[$key]
+                    "value" => $afterArray[$key]
                     ];
                     $acc[] = [
                     "status" => "-",
                     "name" => $key,
                     "children" => null,
-                    "value" => $beforeData[$key]
+                    "value" => $beforeArray[$key]
                     ];
                     return $acc;
                 }

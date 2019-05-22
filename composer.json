@@ -28,9 +28,11 @@
             "DiffGenerator\\Tests\\": "tests"
         },
         "files": [
-            "src/Diffgenerator.php",
+            "src/FilesComparator.php",
             "src/DifferenceBuilder.php",
-            "src/DifferenceFormatter.php"
+            "src/Formatters/PlainFormatter.php",
+            "src/Formatters/NestedFormatter.php",
+            "src/CLI.php"
         ]
     },
     "bin": [
