@@ -31,8 +31,8 @@ function createPlainDiff($diffTree, $prevNames = [])
         } else {
             if ($node["status"] === "+") {
                 $currentNodeName = $node["name"];
-                $oppositeNodes = array_filter($diffTree, function ($children) use ($currentNodeName) {
-                    return $children["name"] === $currentNodeName;
+                $oppositeNodes = array_filter($diffTree, function ($node) use ($currentNodeName) {
+                    return $node["name"] === $currentNodeName;
                 });
                 if (count($oppositeNodes) > 1) {
                     [$node1, $node2] = array_values($oppositeNodes);

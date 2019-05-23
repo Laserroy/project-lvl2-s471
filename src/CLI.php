@@ -2,9 +2,7 @@
 namespace DiffGenerator\Cli;
 
 use Docopt;
-use function DiffGenerator\makeFilesCompare;
-use function DiffGenerator\DifferenceFormatter\createNestedDiff;
-use function DiffGenerator\DifferenceFormatter\createPlainDiff;
+use function DiffGenerator\getFilesDiff;
 
 function runCommandLineActions($docDescription, $params)
 {
@@ -13,15 +11,8 @@ function runCommandLineActions($docDescription, $params)
     $givenArguments = $transformedArgs['args'];
     $pathToFile1 = $givenArguments['PATH1'] ?? null;
     $pathToFile2 = $givenArguments['PATH2'] ?? null;
-    $difference = makeFilesCompare($pathToFile1, $pathToFile2);
-    switch ($givenArguments["--format"]) {
-        case null:
-            echo createNestedDiff($difference), "\n";
-            break;
-        case 'plain':
-            echo createPlainDiff($difference), "\n";
-            break;
-        case 'json':
-            return json_encode($difference);
-    }
+    $requestedFormat = $givenArguments['--format'] ?? 'nested';
+    $difference = getFilesDiff($pathToFile1, $pathToFile2, $requestedFormat);
+    echo $difference, "\n";
+    return $difference;
 }
