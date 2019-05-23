@@ -19,11 +19,9 @@ function getFilesDiff($pathToFile1, $pathToFile2, $requestedFormat = 'nested')
         $extension = getFileExtension($pathToFile1);
         switch ($extension) {
             case 'json':
-                $file1 = file_get_contents($pathToFile1);
-                $file2 = file_get_contents($pathToFile2);
-                $data1 = json_decode($file1);
-                $data2 = json_decode($file2);
-                $diffAST = buildDiffTree($data1, $data2);
+                $beforeData = json_decode(file_get_contents($pathToFile1));
+                $afterData = json_decode(file_get_contents($pathToFile2));
+                $diffAST = buildDiffTree($beforeData, $afterData);
                 break;
             case 'yml':
                 $data1 = Yaml::parseFile($pathToFile1, Yaml::PARSE_OBJECT_FOR_MAP);

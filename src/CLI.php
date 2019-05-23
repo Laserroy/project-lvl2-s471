@@ -14,5 +14,4 @@ function runCommandLineActions($docDescription, $params)
     $requestedFormat = $givenArguments['--format'] ?? 'nested';
     $difference = getFilesDiff($pathToFile1, $pathToFile2, $requestedFormat);
     echo $difference, "\n";
-    return $difference;
 }
