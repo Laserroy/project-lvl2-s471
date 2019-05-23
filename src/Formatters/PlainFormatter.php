@@ -54,6 +54,5 @@ function createPlainDiff($diffTree, $prevNames = [])
             return $acc;
         }
     }, []);
-    $result = implode("\n", $plainDiff);
-    return $result;
+    return implode("\n", $plainDiff);
 }

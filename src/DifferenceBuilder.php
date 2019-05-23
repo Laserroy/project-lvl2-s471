@@ -1,9 +1,7 @@
 <?php
-
 namespace DiffGenerator\DifferenceBuilder;
 
 use function Funct\Collection\union;
-
 
 function buildDiffTree($beforeData, $afterData)
 {
@@ -14,13 +12,13 @@ function buildDiffTree($beforeData, $afterData)
         $commonKeys,
         function ($acc, $key) use ($beforeArray, $afterArray) {
             if (array_key_exists($key, $beforeArray) && !array_key_exists($key, $afterArray)) {
-                   $acc[] = [
-                    "status" => "-",
-                    "name" => $key,
-                    "children" => null,
-                    "value" => $beforeArray[$key]
-                   ];
-                   return $acc;
+                $acc[] = [
+                "status" => "-",
+                "name" => $key,
+                "children" => null,
+                "value" => $beforeArray[$key]
+                ];
+                return $acc;
             } elseif (!array_key_exists($key, $beforeArray) && array_key_exists($key, $afterArray)) {
                 $acc[] = [
                 "status" => "+",

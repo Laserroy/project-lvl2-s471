@@ -39,6 +39,5 @@ function createNestedDiff($diffTree, $offset = "")
         },
         ""
     );
-    $finalResult = "{\n" . $result . $offset . "}\n";
-    return $finalResult;
+    return "{\n" . $result . $offset . "}\n";
 }
