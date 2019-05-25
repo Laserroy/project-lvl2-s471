@@ -12,7 +12,7 @@ function boolToString($value)
     return $value;
 }
 
-function makeNestedDiff($diffTree, $offset = ""):string
+function makeNestedDiff($diffTree, $offset = "")
 {
     $result = array_reduce(
         $diffTree,
@@ -20,24 +20,28 @@ function makeNestedDiff($diffTree, $offset = ""):string
             if ($current["children"] === "nested") {
                 $newOffset = $offset . "    ";
                 $resultString = makeNestedDiff($current["value"], $newOffset);
-                $acc .= $offset . "  " . $current["status"] . " " . $current["name"] . ": " . $resultString;
+                $acc[]= "{$offset}  {$current["status"]} {$current["name"]}: {$resultString}";
                 return $acc;
             }
             if (is_object($current["value"])) {
-                $current["value"] = get_object_vars($current["value"]);
+                $currentArray = get_object_vars($current["value"]);
                 $newOffset = empty($offset) ? "        " : $offset . "    ";
-                $resultString = '';
-                foreach ($current["value"] as $k => $v) {
-                    $resultString .= $newOffset . $offset . $k . ": " . boolToString($v) . "\n";
+                $result = [];
+                foreach ($currentArray as $k => $v) {
+                    $value = boolToString($v);
+                    $result[] = "{$newOffset}{$offset}{$k}: {$value}\n";
                 }
-                $acc .= "{$offset}  {$current["status"]} {$current["name"]}: {\n" . $resultString . $offset . "    }\n";
+                $resultString = implode("", $result);
+                $acc[] = "{$offset}  {$current["status"]} {$current["name"]}: {\n{$resultString}{$offset}    }\n";
                 return $acc;
             } else {
-                $acc .= "{$offset}  {$current["status"]} {$current["name"]}: " . boolToString($current["value"]) . "\n";
+                $currentValue = boolToString($current["value"]);
+                $acc[] = "{$offset}  {$current["status"]} {$current["name"]}: {$currentValue}\n";
                 return $acc;
             }
         },
-        ""
+        []
     );
-    return "{\n" . $result . $offset . "}\n";
+    $resultString = implode("", $result);
+    return "{\n{$resultString}{$offset}}\n";
 }
