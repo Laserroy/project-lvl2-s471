@@ -1,14 +1,14 @@
 <?php
 
-namespace DiffGenerator\Tests;
+namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
-use function DiffGenerator\DifferenceBuilder\buildDiffTree;
-use function DiffGenerator\DifferenceFormatter\createPlainDiff;
+use function Differ\DiffBuilder\buildDiffTree;
+use function Differ\DiffFormatter\makePlainDiff;
 
 class PlainFormatterTest extends TestCase
 {
-    public function testCreatePlainDiff()
+    public function testMakePlainDiff()
     {
         $jsonBeforeData = file_get_contents(__DIR__ . '/fixtures/before.json');
         $jsonAfterData = file_get_contents(__DIR__ . '/fixtures/after.json');
@@ -16,7 +16,7 @@ class PlainFormatterTest extends TestCase
         $diffTree = buildDiffTree(json_decode($jsonBeforeData), json_decode($jsonAfterData));
         $this->assertEquals(
             $jsonResult,
-            createPlainDiff($diffTree)
+            makePlainDiff($diffTree)
         );
     }
 }

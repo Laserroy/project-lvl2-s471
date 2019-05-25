@@ -1,9 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-namespace DiffGenerator;
-use function DiffGenerator\run;
-use function DiffGenerator\Cli\runCommandLineActions;
+namespace Differ;
+use function Differ\Cli\run;
 
 $autoloadPath1 = __DIR__ . '/../../../autoload.php';
 $autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
@@ -34,5 +33,5 @@ $params = array(
     'version' => 'v0.0.1',
 );
 
-runCommandLineActions($docDescription, $params);
+run($docDescription, $params);
 

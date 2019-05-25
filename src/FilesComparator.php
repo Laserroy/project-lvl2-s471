@@ -1,10 +1,10 @@
 <?php
-namespace DiffGenerator;
+namespace Differ;
 
 use Symfony\Component\Yaml\Yaml;
-use function DiffGenerator\DifferenceBuilder\buildDiffTree;
-use function DiffGenerator\DifferenceFormatter\createNestedDiff;
-use function DiffGenerator\DifferenceFormatter\createPlainDiff;
+use function Differ\DiffBuilder\buildDiffTree;
+use function Differ\DiffFormatter\makeNestedDiff;
+use function Differ\DiffFormatter\makePlainDiff;
 
 
 function getFileExtension($path)
@@ -13,7 +13,7 @@ function getFileExtension($path)
     return $pathInfo['extension'];
 }
 
-function getFilesDiff($pathToFile1, $pathToFile2, $requestedFormat = 'nested')
+function getDiff($pathToFile1, $pathToFile2, $requestedFormat = 'nested')
 {
     if (getFileExtension($pathToFile1) === getFileExtension($pathToFile2)) {
         $extension = getFileExtension($pathToFile1);
@@ -36,9 +36,9 @@ function getFilesDiff($pathToFile1, $pathToFile2, $requestedFormat = 'nested')
         }
         switch ($requestedFormat) {
             case 'nested':
-                return createNestedDiff($diffAST);
+                return makeNestedDiff($diffAST);
             case 'plain':
-                return createPlainDiff($diffAST);
+                return makePlainDiff($diffAST);
             case 'json':
                 return json_encode($diffAST);
         }

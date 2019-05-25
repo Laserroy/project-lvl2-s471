@@ -1,14 +1,13 @@
 <?php
-
-namespace DiffGenerator\Tests;
+namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
-use function DiffGenerator\DifferenceBuilder\buildDiffTree;
-use function DiffGenerator\DifferenceFormatter\createNestedDiff;
+use function Differ\DiffBuilder\buildDiffTree;
+use function Differ\DiffFormatter\makeNestedDiff;
 
 class NestedFormatterTest extends TestCase
 {
-    public function testCreateNestedDiff()
+    public function testMakeNestedDiff()
     {
         $jsonBeforeData = file_get_contents(__DIR__ . '/fixtures/before.json');
         $jsonAfterData = file_get_contents(__DIR__ . '/fixtures/after.json');
@@ -16,7 +15,7 @@ class NestedFormatterTest extends TestCase
         $diffTree = buildDiffTree(json_decode($jsonBeforeData), json_decode($jsonAfterData));
         $this->assertEquals(
             $jsonResult,
-            createNestedDiff($diffTree)
+            makeNestedDiff($diffTree)
         );
     }
 }

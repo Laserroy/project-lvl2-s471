@@ -1,10 +1,10 @@
 <?php
-namespace DiffGenerator\Cli;
+namespace Differ\Cli;
 
 use Docopt;
-use function DiffGenerator\getFilesDiff;
+use function Differ\getDiff;
 
-function runCommandLineActions($docDescription, $params)
+function run($docDescription, $params)
 {
     $args = Docopt::handle($docDescription, $params);
     $transformedArgs = json_decode(json_encode($args), true);
@@ -12,6 +12,7 @@ function runCommandLineActions($docDescription, $params)
     $pathToFile1 = $givenArguments['PATH1'] ?? null;
     $pathToFile2 = $givenArguments['PATH2'] ?? null;
     $requestedFormat = $givenArguments['--format'] ?? 'nested';
-    $difference = getFilesDiff($pathToFile1, $pathToFile2, $requestedFormat);
-    echo $difference, "\n";
+    $difference = getDiff($pathToFile1, $pathToFile2, $requestedFormat);
+    print_r($difference);
+    print_r("\n");
 }

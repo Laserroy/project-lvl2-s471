@@ -1,5 +1,5 @@
 <?php
-namespace DiffGenerator\DifferenceBuilder;
+namespace Differ\DiffBuilder;
 
 use function Funct\Collection\union;
 

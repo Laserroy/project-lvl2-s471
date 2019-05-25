@@ -1,5 +1,5 @@
 <?php
-namespace DiffGenerator\DifferenceFormatter;
+namespace Differ\DiffFormatter;
 
 function boolToString($value)
 {
@@ -12,14 +12,14 @@ function boolToString($value)
     return $value;
 }
 
-function createNestedDiff($diffTree, $offset = "")
+function makeNestedDiff($diffTree, $offset = "")
 {
     $result = array_reduce(
         $diffTree,
         function ($acc, $current) use ($offset) {
             if ($current["children"] === "nested") {
                 $newOffset = $offset . "    ";
-                $resultString = createNestedDiff($current["value"], $newOffset);
+                $resultString = makeNestedDiff($current["value"], $newOffset);
                 $acc .= $offset . "  " . $current["status"] . " " . $current["name"] . ": " . $resultString;
                 return $acc;
             }

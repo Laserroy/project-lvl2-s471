@@ -1,5 +1,5 @@
 <?php
-namespace DiffGenerator\DifferenceFormatter;
+namespace Differ\DiffFormatter;
 
 function buildMessage($node1, $node2 = [], $prevNames = [])
 {
@@ -21,12 +21,12 @@ function buildMessage($node1, $node2 = [], $prevNames = [])
     }
 }
 
-function createPlainDiff($diffTree, $prevNames = [])
+function makePlainDiff($diffTree, $prevNames = [])
 {
     $plainDiff = array_reduce($diffTree, function ($acc, $node) use ($prevNames, $diffTree) {
         if ($node["children"] === "nested") {
             $prevNames[] = $node["name"];
-            $acc[] = createPlainDiff($node["value"], $prevNames);
+            $acc[] = makePlainDiff($node["value"], $prevNames);
             return $acc;
         } else {
             if ($node["status"] === "+") {
