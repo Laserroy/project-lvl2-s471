@@ -3,7 +3,7 @@ namespace Differ\DiffBuilder;
 
 use function Funct\Collection\union;
 
-function buildDiffTree($beforeData, $afterData)
+function buildDiffTree($beforeData, $afterData):array
 {
     $beforeArray = get_object_vars($beforeData);
     $afterArray = get_object_vars($afterData);

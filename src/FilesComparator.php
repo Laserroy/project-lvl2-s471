@@ -13,7 +13,7 @@ function getFileExtension($path)
     return $pathInfo['extension'];
 }
 
-function getDiff($pathToFile1, $pathToFile2, $requestedFormat = 'nested')
+function getDiff($pathToFile1, $pathToFile2, $requestedFormat = 'nested'):string
 {
     if (getFileExtension($pathToFile1) === getFileExtension($pathToFile2)) {
         $extension = getFileExtension($pathToFile1);

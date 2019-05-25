@@ -21,7 +21,7 @@ function buildMessage($node1, $node2 = [], $prevNames = [])
     }
 }
 
-function makePlainDiff($diffTree, $prevNames = [])
+function makePlainDiff($diffTree, $prevNames = []):string
 {
     $plainDiff = array_reduce($diffTree, function ($acc, $node) use ($prevNames, $diffTree) {
         if ($node["children"] === "nested") {

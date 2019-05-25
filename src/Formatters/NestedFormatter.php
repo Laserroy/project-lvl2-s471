@@ -12,7 +12,7 @@ function boolToString($value)
     return $value;
 }
 
-function makeNestedDiff($diffTree, $offset = "")
+function makeNestedDiff($diffTree, $offset = ""):string
 {
     $result = array_reduce(
         $diffTree,
