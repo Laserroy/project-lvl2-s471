@@ -20,7 +20,7 @@ function makeNestedDiff($diffTree, $offset = "")
             if ($current["children"] === "nested") {
                 $newOffset = $offset . "    ";
                 $resultString = makeNestedDiff($current["value"], $newOffset);
-                $acc[]= "{$offset}  {$current["status"]} {$current["name"]}: {$resultString}";
+                $acc[] = "{$offset}  {$current["status"]} {$current["name"]}: {$resultString}";
                 return $acc;
             }
             if (is_object($current["value"])) {
