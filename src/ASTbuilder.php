@@ -1,9 +1,9 @@
 <?php
-namespace Differ\DiffBuilder;
+namespace Differ\ASTbuilder;
 
 use function Funct\Collection\union;
 
-function buildDiffTree($beforeData, $afterData):array
+function buildAST($beforeData, $afterData):array
 {
     $beforeArray = get_object_vars($beforeData);
     $afterArray = get_object_vars($afterData);
@@ -42,7 +42,7 @@ function buildDiffTree($beforeData, $afterData):array
                     "status" => " ",
                     "name" => $key,
                     "children" => "nested",
-                    "value" => buildDiffTree($beforeArray[$key], $afterArray[$key])
+                    "value" => buildAST($beforeArray[$key], $afterArray[$key])
                     ];
                     return $acc;
                 } else {
