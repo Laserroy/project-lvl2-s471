@@ -29,6 +29,7 @@
         },
         "files": [
             "src/Differ.php",
+            "src/Parser.php",
             "src/ASTbuilder.php",
             "src/Formatters/PlainFormatter.php",
             "src/Formatters/NestedFormatter.php",
