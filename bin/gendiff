@@ -12,7 +12,6 @@ if (file_exists($autoloadPath1)) {
     require $autoloadPath2;
 }
 $docDescription = <<<'DOCOPT'
-        Example of program which uses [options] shortcut in pattern.
         Usage:
             gendiff (-h | --help)
             gendiff --version
