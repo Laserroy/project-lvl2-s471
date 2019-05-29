@@ -12,36 +12,73 @@ function boolToString($value)
     return $value;
 }
 
-function makeNestedDiff($diffTree, $offset = "")
+function getOffset($depth)
+{
+    return str_repeat(" ", $depth * 4);
+}
+
+function getValueStringRepresent($value, $depth):string
+{
+    if (is_object($value)) {
+        $content = get_object_vars($value);
+        $keys = array_keys($content);
+        $dataOffset = getOffset($depth + 2);
+        $bracketOffset = getOffset($depth + 1);
+        $converted = array_map(function ($key) use ($dataOffset, $content) {
+            $value = boolToString($content[$key]);
+            return "{$dataOffset}{$key}: {$value}";
+        }, $keys);
+        $represent = implode("\n", $converted);
+        return "{\n{$represent}\n{$bracketOffset}}\n";
+    }
+    $converted = boolToString($value);
+    return "{$converted}\n";
+}
+
+function makeNestedDiff($diffTree, $depth = 0)
 {
     $result = array_reduce(
         $diffTree,
-        function ($acc, $current) use ($offset) {
-            if ($current["children"] === "nested") {
-                $newOffset = $offset . "    ";
-                $resultString = makeNestedDiff($current["value"], $newOffset);
-                $acc[] = "{$offset}  {$current["status"]} {$current["name"]}: {$resultString}";
-                return $acc;
-            }
-            if (is_object($current["value"])) {
-                $currentArray = get_object_vars($current["value"]);
-                $newOffset = empty($offset) ? "        " : $offset . "    ";
-                $result = [];
-                foreach ($currentArray as $k => $v) {
-                    $value = boolToString($v);
-                    $result[] = "{$newOffset}{$offset}{$k}: {$value}\n";
-                }
-                $resultString = implode("", $result);
-                $acc[] = "{$offset}  {$current["status"]} {$current["name"]}: {\n{$resultString}{$offset}    }\n";
-                return $acc;
-            } else {
-                $currentValue = boolToString($current["value"]);
-                $acc[] = "{$offset}  {$current["status"]} {$current["name"]}: {$currentValue}\n";
-                return $acc;
+        function ($acc, $node) use ($depth) {
+            ["type" => $type,
+             "name" => $name,
+             "oldValue" => $oldValue,
+             "newValue" => $newValue,
+             "children" => $children] = $node;
+            switch ($type) {
+                case "added":
+                    $offset = getOffset($depth);
+                    $resultString = getValueStringRepresent($newValue, $depth);
+                    $acc[] = "{$offset}  + {$name}: {$resultString}";
+                    return $acc;
+                case "removed":
+                    $offset = getOffset($depth);
+                    $resultString = getValueStringRepresent($oldValue, $depth);
+                    $acc[] = "{$offset}  - {$name}: {$resultString}";
+                    return $acc;
+                case "changed":
+                    $offset = getOffset($depth);
+                    $oldValueString = getValueStringRepresent($oldValue, $depth);
+                    $newValueString = getValueStringRepresent($newValue, $depth);
+                    $acc[] = "{$offset}  + {$name}: {$newValueString}";
+                    $acc[] = "{$offset}  - {$name}: {$oldValueString}";
+                    return $acc;
+                case "unchanged":
+                    $offset = getOffset($depth);
+                    $resultString = getValueStringRepresent($oldValue, $depth);
+                    $acc[] = "{$offset}    {$name}: {$resultString}";
+                    return $acc;
+                case "nested":
+                    $newDepth = $depth + 1;
+                    $offset = getOffset($newDepth);
+                    $resultString = makeNestedDiff($children, $newDepth);
+                    $acc[] = "{$offset}{$name}: {$resultString}";
+                    return $acc;
             }
         },
         []
     );
+    $offset = getOffset($depth);
     $resultString = implode("", $result);
     return "{\n{$resultString}{$offset}}\n";
 }
