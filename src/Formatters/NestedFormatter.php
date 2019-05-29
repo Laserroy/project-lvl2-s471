@@ -45,34 +45,31 @@ function makeNestedDiff($diffTree, $depth = 0)
              "oldValue" => $oldValue,
              "newValue" => $newValue,
              "children" => $children] = $node;
+             $offset = getOffset($depth);
             switch ($type) {
                 case "added":
-                    $offset = getOffset($depth);
                     $resultString = getValueStringRepresent($newValue, $depth);
                     $acc[] = "{$offset}  + {$name}: {$resultString}";
                     return $acc;
                 case "removed":
-                    $offset = getOffset($depth);
                     $resultString = getValueStringRepresent($oldValue, $depth);
                     $acc[] = "{$offset}  - {$name}: {$resultString}";
                     return $acc;
                 case "changed":
-                    $offset = getOffset($depth);
                     $oldValueString = getValueStringRepresent($oldValue, $depth);
                     $newValueString = getValueStringRepresent($newValue, $depth);
                     $acc[] = "{$offset}  + {$name}: {$newValueString}";
                     $acc[] = "{$offset}  - {$name}: {$oldValueString}";
                     return $acc;
                 case "unchanged":
-                    $offset = getOffset($depth);
                     $resultString = getValueStringRepresent($oldValue, $depth);
                     $acc[] = "{$offset}    {$name}: {$resultString}";
                     return $acc;
                 case "nested":
                     $newDepth = $depth + 1;
-                    $offset = getOffset($newDepth);
+                    $newOffset = getOffset($newDepth);
                     $resultString = makeNestedDiff($children, $newDepth);
-                    $acc[] = "{$offset}{$name}: {$resultString}";
+                    $acc[] = "{$newOffset}{$name}: {$resultString}";
                     return $acc;
             }
         },
