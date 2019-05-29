@@ -13,7 +13,8 @@ function parse($data, $extension)
             return Yaml::parse($data, Yaml::PARSE_OBJECT_FOR_MAP);
         },
         "ini" => function ($data) {
-            return parse_ini_string($data, false, INI_SCANNER_RAW);
+            $parsedArray = parse_ini_string($data, false, INI_SCANNER_RAW);
+            return (object) $parsedArray;
         }
     ];
     return $mappingForParsing[$extension]($data);
