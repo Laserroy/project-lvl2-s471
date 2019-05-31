@@ -1,7 +1,7 @@
 <?php
 namespace Differ\DiffFormatter;
 
-function makePlainDiff($diffTree, $prevNames = [])
+function makePlainDiff($diffTree, $prevNames = []):string
 {
     $diffLines = array_reduce($diffTree, function ($acc, $node) use ($prevNames) {
         ['type' => $type,
@@ -31,6 +31,6 @@ function makePlainDiff($diffTree, $prevNames = [])
                 return $acc;
         }
     }, []);
-    $diffLines = implode("\n", $diffLines);
-    return $diffLines;
+    $splittedLines = implode("\n", $diffLines);
+    return $splittedLines;
 }

@@ -29,21 +29,18 @@ function buildAST($beforeData, $afterData):array
             } elseif (!array_key_exists($key, $beforeArray) && array_key_exists($key, $afterArray)) {
                 $acc[] = createNode('added', $key, null, $afterArray[$key], null);
                 return $acc;
+            } elseif ($beforeArray[$key] === $afterArray[$key]) {
+                $acc[] = createNode('unchanged', $key, $beforeArray[$key], null, null);
+                return $acc;
+            } elseif (is_object($afterArray[$key]) && is_object($beforeArray[$key])) {
+                $children = buildAST($beforeArray[$key], $afterArray[$key]);
+                $acc[] = createNode('nested', $key, null, null, $children);
+                return $acc;
             } else {
-                if ($beforeArray[$key] === $afterArray[$key]) {
-                    $acc[] = createNode('unchanged', $key, $beforeArray[$key], null, null);
-                    return $acc;
-                }
-                if (is_object($afterArray[$key]) && is_object($beforeArray[$key])) {
-                    $children = buildAST($beforeArray[$key], $afterArray[$key]);
-                    $acc[] = createNode('nested', $key, null, null, $children);
-                    return $acc;
-                } else {
-                    $oldValue = $beforeArray[$key];
-                    $newValue = $afterArray[$key];
-                    $acc[] = createNode('changed', $key, $oldValue, $newValue, null);
-                    return $acc;
-                }
+                $oldValue = $beforeArray[$key];
+                $newValue = $afterArray[$key];
+                $acc[] = createNode('changed', $key, $oldValue, $newValue, null);
+                return $acc;
             }
         },
         []

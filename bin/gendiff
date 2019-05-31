@@ -11,7 +11,8 @@ if (file_exists($autoloadPath1)) {
     require $autoloadPath2;
 }
 
-$docDescription = <<<'DOCOPT'
+const DESCRIPTION =
+<<<'DOCOPT'
 Usage:
     gendiff (-h | --help)
     gendiff --version
@@ -25,10 +26,11 @@ Options:
     --version        Show version.
     --format=TYPE    Show difference in selected type [default: nested]
 DOCOPT;
+
 $params = array(
     'help' => true,
     'version' => 'v0.0.1',
 );
 
-run($docDescription, $params);
+run(DESCRIPTION, $params);
 
